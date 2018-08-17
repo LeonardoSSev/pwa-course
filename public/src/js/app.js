@@ -1,6 +1,7 @@
 
 var button = document.querySelector('#start-button');
 var output = document.querySelector('#output');
+var output2 = document.querySelector('#output2');
 
 button.addEventListener('click', function() {
   // Create a new Promise here and use setTimeout inside the function you pass to the constructor
@@ -31,6 +32,31 @@ button.addEventListener('click', function() {
   // Finally, output the "name" property of the data you got back (e.g. data.name) inside
   // the "output" element (see variables at top of the file)
 
+    var promise2 = new Promise(function() {
+        setTimeout(function() { // <- Store this INSIDE the Promise you created!
+            // Resolve the following URL: https://swapi.co/api/people/1
+            fetch('https://httpbin.org/put', {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+              body: JSON.stringify({person: {name: 'Leonardo', age: 21}})
+            })
+                .then(function(response) {
+                    return response;
+                })
+                .then(function(data) {
+                    return data.json();
+                })
+                .then(function(data) {
+                    output2.innerHTML = data.json.person.name
+                })
+                .catch(function(err) {
+                    output2.innerHTML = err.message
+                });
+        }, 3000);
+    });
   // Repeat the exercise with a PUT request you send to https://httpbin.org/put
   // Make sure to set the appropriate headers (as shown in the lecture)
   // Send any data of your choice, make sure to access it correctly when outputting it
