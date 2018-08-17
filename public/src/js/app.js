@@ -4,10 +4,23 @@ var output = document.querySelector('#output');
 
 button.addEventListener('click', function() {
   // Create a new Promise here and use setTimeout inside the function you pass to the constructor
-
-  setTimeout(function() { // <- Store this INSIDE the Promise you created!
-    // Resolve the following URL: https://swapi.co/api/people/1
-  }, 3000);
+    var promise = new Promise(function() {
+        setTimeout(function() { // <- Store this INSIDE the Promise you created!
+            // Resolve the following URL: https://swapi.co/api/people/1
+            fetch('https://swapi.co/api/people/1')
+                .then(function(response) {
+                    return response;
+                })
+                .then(function(data) {
+                   return data.json();
+                }).then(function(data) {
+                    output.innerHTML = data.name;
+            })
+                .catch(function(err) {
+                    output.innerHTML = err.message;
+                });
+        }, 3000);
+    });
 
   // Handle the Promise "response" (=> the value you resolved) and return a fetch()
   // call to the value (= URL) you resolved (use a GET request)
